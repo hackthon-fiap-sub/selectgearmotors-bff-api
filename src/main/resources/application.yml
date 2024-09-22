@@ -1,0 +1,114 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /api
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  application:
+    name: selectgearmotors-bff-api
+  config:
+    activate:
+      on-profile: prod
+  main:
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: "path-pattern-parser"
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+      sqs:
+        listener:
+          acknowledge-mode: MANUAL
+    region:
+      static: us-east-1
+
+aws:
+  privacyNotification:
+    queueName: ${AWS_SQS_QUEUE_NAME}
+    queueUrl: ${AWS_SQS_QUEUE_URL}
+    queueArn: ${AWS_SQS_QUEUE_ARN}
+
+api:
+  client-types:
+    url: ${CLIENT_TYPES_URL}
+  clients:
+    url: ${CLIENTS_URL}
+  client-legal:
+    url: ${CLIENTS_LEGAL_URL}
+  client-physical:
+    url: ${CLIENTS_PHYSICAL_URL}
+  client-media:
+    url: ${CLIENTS_MEDIA_URL}
+  company-types:
+    url: ${COMPANY_TYPES_URL}
+  companies:
+    url: ${COMPANIES_URL}
+  company-car-sellers:
+    url: ${COMPANY_CAR_SELLERS_URL}
+  company-media:
+    url: ${COMPANY_MEDIA_URL}
+  transaction-types:
+    url: ${TRANSACTION_TYPES_URL}
+  transactions:
+    url: ${TRANSACTIONS_URL}
+  vehicle-types:
+    url: ${VEHICLE_TYPES_URL}
+  vehicles:
+    url: ${VEHICLES_URL}
+  vehicle-categories:
+    url: ${VEHICLES_CATEGORIES_URL}
+  vehicle-models:
+    url: ${VEHICLES_MODELS_URL}
+  vehicle-brands:
+    url: ${VEHICLES_BRANDS_URL}
+
+swagger:
+  api:
+    url: ${SWAGGER_API_URL}
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+
+management:
+  tracing:
+    baggage:
+      enabled: true
+    enabled: true
+    propagation:
+      type: 'W3C'
+    sampling:
+      probability: 1.0 # para enviar 100% da amostra'
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL} # alterar o endereco do Zipkin'
+
+  #security:
+  #  oauth2:
+  #    client:
+  #      provider:
+  #        cognito:
+  #          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_lLiNIC87U
+  #      registration:
+  #        cognito:
+  #          client-id: ${AWS_COGNITO_CLIENT_ID}
+  #          client-secret: ${AWS_COGNITO_CLIENT_SECRET}
+  #          scope: openid
+
+#application:
+#  security:
+#    jwt:
+#      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#      expiration: 864000000 # 10 day
+#      refresh-token:
+#        expiration: 6048000000 # 70 days
+
+#cognito:
+#  user-pool-id: us-east-1_lLiNIC87U
+
