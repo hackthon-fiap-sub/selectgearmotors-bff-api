@@ -3,10 +3,12 @@ package br.com.selectgearmotors.bff.application.service;
 import br.com.selectgearmotors.bff.application.api.dto.transaction.Transaction;
 import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionCreate;
 import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionType;
+import br.com.selectgearmotors.bff.commons.util.TokenUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -34,9 +36,13 @@ public class TransactionService {
     @CircuitBreaker(name = "createTransactionTypeService", fallbackMethod = "createTransactionTypeFallback")
     @Retry(name = "createTransactionTypeService")
     public Mono<ResponseEntity<TransactionType>> createTransactionType(TransactionType transactionType, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(transactionTypesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(transactionType), TransactionType.class)
                 .retrieve()
                 .toEntity(TransactionType.class);
@@ -46,9 +52,13 @@ public class TransactionService {
     @CircuitBreaker(name = "getTransactionTypeService", fallbackMethod = "getTransactionTypeServiceFallback")
     @Retry(name = "getTransactionTypeService")
     public Mono<ResponseEntity<List<TransactionType>>> getTransactionTypes(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(transactionTypesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .toEntityList(TransactionType.class);
     }
@@ -57,9 +67,13 @@ public class TransactionService {
     @CircuitBreaker(name = "createTransactionService", fallbackMethod = "createTransactionFallback")
     @Retry(name = "createTransactionService")
     public Mono<ResponseEntity<Transaction>> createTransaction(Transaction transaction, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(transactionsUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(transaction), Transaction.class)
                 .retrieve()
                 .toEntity(Transaction.class);
@@ -69,9 +83,13 @@ public class TransactionService {
     @CircuitBreaker(name = "getTransactionsService", fallbackMethod = "getTransactionsFallback")
     @Retry(name = "getTransactionsService")
     public Mono<ResponseEntity<List<Transaction>>> getTransactions(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(transactionsUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .toEntityList(Transaction.class);
     }
@@ -80,9 +98,13 @@ public class TransactionService {
     @CircuitBreaker(name = "getTransactionCreatesService", fallbackMethod = "getTransactionCreatesFallback")
     @Retry(name = "getTransactionCreatesService")
     public Mono<ResponseEntity<List<TransactionCreate>>> getTransactionCreates(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(transactionsUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .toEntityList(TransactionCreate.class);
     }
@@ -91,9 +113,13 @@ public class TransactionService {
     @CircuitBreaker(name = "createTransactionCreateService", fallbackMethod = "createTransactionCreateFallback")
     @Retry(name = "createTransactionCreateService")
     public Mono<ResponseEntity<TransactionCreate>> createTransactionCreate(TransactionCreate transactionCreate, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(transactionsUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(transactionCreate), TransactionCreate.class)
                 .retrieve()
                 .toEntity(TransactionCreate.class);

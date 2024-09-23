@@ -5,6 +5,7 @@ import br.com.selectgearmotors.bff.application.api.dto.client.ClientLegal;
 import br.com.selectgearmotors.bff.application.api.dto.client.ClientPhysical;
 import br.com.selectgearmotors.bff.application.api.dto.client.ClientType;
 import br.com.selectgearmotors.bff.application.service.ClientService;
+import br.com.selectgearmotors.bff.commons.util.TokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

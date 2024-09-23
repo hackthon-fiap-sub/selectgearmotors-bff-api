@@ -6,11 +6,13 @@ import br.com.selectgearmotors.bff.application.api.dto.company.Company;
 import br.com.selectgearmotors.bff.application.api.dto.company.CompanyMedia;
 import br.com.selectgearmotors.bff.application.api.dto.company.CompanyType;
 import br.com.selectgearmotors.bff.commons.exception.ResourceFoundException;
+import br.com.selectgearmotors.bff.commons.util.TokenUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -44,9 +46,13 @@ public class CompanyService {
     @CircuitBreaker(name = "createCompanyTypeService", fallbackMethod = "createCompanyTypeFallback")
     @Retry(name = "createCompanyTypeService", fallbackMethod = "createCompanyTypeFallback")
     public Mono<ResponseEntity<CompanyType>> createCompanyType(CompanyType companyType, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(companyTypesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(companyType), CompanyType.class)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
@@ -57,10 +63,13 @@ public class CompanyService {
     @CircuitBreaker(name = "getCompanyTypesService", fallbackMethod = "getCompanyTypesFallback")
     @Retry(name = "getCompanyTypesService", fallbackMethod = "getCompanyTypesFallback")
     public Mono<ResponseEntity<List<CompanyType>>> getCompanyTypes(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(companyTypesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
                 .toEntityList(CompanyType.class);
@@ -70,9 +79,13 @@ public class CompanyService {
     @CircuitBreaker(name = "companyCreateService", fallbackMethod = "companyCreateFallback")
     @Retry(name = "companyCreateService", fallbackMethod = "companyCreateFallback")
     public Mono<ResponseEntity<Company>> createCompany(Company company, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(companiesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(company), Company.class)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
@@ -83,9 +96,13 @@ public class CompanyService {
     @CircuitBreaker(name = "getCompaniesService", fallbackMethod = "getCompaniesServiceFallback")
     @Retry(name = "getCompaniesService", fallbackMethod = "getCompaniesServiceFallback")
     public Mono<ResponseEntity<List<Company>>> getCompanies(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(companiesUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
                 .toEntityList(Company.class);
@@ -95,9 +112,13 @@ public class CompanyService {
     @CircuitBreaker(name = "getCarSellersService", fallbackMethod = "getCarSellersFallback")
     @Retry(name = "getCarSellersService", fallbackMethod = "getCarSellersFallback")
     public Mono<ResponseEntity<List<CarSeller>>> getCarSellers(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(companiesUrl + "/car-sellers")
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
                 .toEntityList(CarSeller.class);
@@ -107,9 +128,13 @@ public class CompanyService {
     @CircuitBreaker(name = "createCarSellerService", fallbackMethod = "createCarSellerFallback")
     @Retry(name = "createCarSellerService", fallbackMethod = "createCarSellerFallback")
     public Mono<ResponseEntity<CarSeller>> createCarSeller(CarSeller carSeller, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(companiesUrl + "/car-sellers")
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(carSeller), CarSeller.class)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
@@ -120,9 +145,13 @@ public class CompanyService {
     @CircuitBreaker(name = "getCompanyMediaService", fallbackMethod = "getCompanyMediaFallback")
     @Retry(name = "getCompanyMediaService")
     public Mono<ResponseEntity<List<CompanyMedia>>> getCompanyMedia(String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
                 .uri(companyMediaUrl)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
                 .toEntityList(CompanyMedia.class);
