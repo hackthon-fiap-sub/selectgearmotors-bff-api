@@ -24,6 +24,14 @@ import java.time.LocalDate;
 @Tag(name = "ProductRequest", description = "Model")
 public class Company implements Serializable {
 
+    @Schema(description = "Unique identifier of the Driver.",
+            example = "1")
+    private Long id;
+
+    @Schema(description = "Name of the Company.",
+            example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
+    private String code;
+
     @Schema(description = "Fantasy Name of the Cooperative.",
             example = "SCRAP LTDA", accessMode = Schema.AccessMode.READ_ONLY)
     private String socialName;

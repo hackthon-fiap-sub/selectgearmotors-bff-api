@@ -26,6 +26,10 @@ public class Client implements Serializable {
     @Size(min = 1, max = 255)
     private String name;
 
+    @Schema(description = "code of the Client.",
+            example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
+    private String code;
+
     @Schema(description = "name of the Client.",
             example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
     @NotNull(message = "o campo \"email\" é obrigario")

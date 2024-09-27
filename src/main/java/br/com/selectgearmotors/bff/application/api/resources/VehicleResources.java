@@ -68,6 +68,17 @@ public class VehicleResources {
         return vehicleService.getVehicles(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/code/{code}")
+    public ResponseEntity<Vehicle> getVehiclesCode(@PathVariable("code") String code, @RequestHeader("Authorization") String token) {
+        return vehicleService.getVehiclesCode(code, token).block();
+    }
+
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})

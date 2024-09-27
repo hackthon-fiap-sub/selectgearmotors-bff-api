@@ -29,6 +29,10 @@ public class CarSeller implements Serializable {
             example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
+    @Schema(description = "Name of the Company.",
+            example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
+    private String code;
+
     @Schema(description = "name of the Company.",
             example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
     @NotNull(message = "o campo \"name\" é obrigario")

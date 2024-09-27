@@ -189,6 +189,145 @@ public class ClientService {
                 .toEntityList(ClientMedia.class);
     }
 
+    @CircuitBreaker(name = "getClientCodeService", fallbackMethod = "getClientCodeFallback")
+    @Retry(name = "getClientCodeService")
+    public Mono<ResponseEntity<Client>> getClientCode(String code, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(clientsUrl + "/code/" + code)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Client.class);
+    }
+
+    @CircuitBreaker(name = "updateClientTypeService", fallbackMethod = "updateClientTypeFallback")
+    @Retry(name = "updateClientTypeUpdateService")
+    public Mono<ResponseEntity<ClientType>> updateClientType(Long id, ClientType clientType, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(clientTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(clientType), ClientType.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientType.class);
+    }
+
+    @CircuitBreaker(name = "createClientTypeRemoveService", fallbackMethod = "createClientTypeUpdateFallback")
+    @Retry(name = "createClientTypeUpdateService")
+    public Mono<ResponseEntity<ClientType>> removeClientType(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(clientTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientType.class);
+    }
+
+    @CircuitBreaker(name = "updateClientService", fallbackMethod = "updateClientFallback")
+    @Retry(name = "updateClientUService")
+    public Mono<ResponseEntity<Client>> updateClient(Long id, Client client, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(clientsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(client), Client.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Client.class);
+    }
+
+    @CircuitBreaker(name = "removeClientService", fallbackMethod = "removeClientFallback")
+    @Retry(name = "removeClientService")
+    public Mono<ResponseEntity<Client>> removeClient(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(clientsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Client.class);
+    }
+
+    @CircuitBreaker(name = "updateClientLegalService", fallbackMethod = "updateClientLegalFallback")
+    @Retry(name = "updateClientLegaltService")
+    public Mono<ResponseEntity<ClientLegal>> updateClientLegal(Long id, ClientLegal clientLegalRequest, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(clientLegalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(clientLegalRequest), ClientLegal.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientLegal.class);
+    }
+
+    @CircuitBreaker(name = "removeClientLegalService", fallbackMethod = "removeClientLegalFallback")
+    @Retry(name = "removeClientLegalService")
+    public Mono<ResponseEntity<ClientLegal>> removeClientLegal(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(clientLegalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientLegal.class);
+    }
+
+    @CircuitBreaker(name = "updateClientPhysicalService", fallbackMethod = "updateClientPhysicalFallback")
+    @Retry(name = "updateClientPhysicalService")
+    public Mono<ResponseEntity<ClientPhysical>> updateClientPhysical(Long id, ClientPhysical clientPhysical, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(clientPhysicalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(clientPhysical), ClientPhysical.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientPhysical.class);
+    }
+
+    @CircuitBreaker(name = "removeClientPhysicalService", fallbackMethod = "removeClientPhysicalFallback")
+    @Retry(name = "removeClientPhysicalService")
+    public Mono<ResponseEntity<ClientPhysical>> removeClientPhysicals(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(clientPhysicalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientPhysical.class);
+    }
+
     public Mono<ResponseEntity<ClientType>> createClientTypeFallback(ClientType clientType, String token, Throwable throwable) {
         log.error("Erro ao criar tipo de cliente", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
@@ -233,4 +372,45 @@ public class ClientService {
         log.error("Erro ao buscar medias", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
     }
+
+    public Mono<ResponseEntity<Client>> getClientCodeFallback(String code, String token, Throwable throwable) {
+        log.error("Erro ao buscar cliente por código", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Client>> updateClientType(Long id, ClientType clientType, String token, Throwable throwable) {
+        log.error("Erro ao atualizar tipo de cliente", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Client>> removeClientType(Long id, String token, Throwable throwable) {
+        log.error("Erro ao remover tipo de cliente", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Client>> updateClient(Long id, Client client, String token, Throwable throwable) {
+        log.error("Erro ao atualizar cliente", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Client>> removeClient(Long id, String token, Throwable throwable) {
+        log.error("Erro ao remover cliente", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<ClientLegal>> updateClientLegal(Long id, ClientLegal clientLegalRequest, String token, Throwable throwable) {
+        log.error("Erro ao atualizar cliente legal", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<ClientLegal>> removeClientLegal(Long id, String token, Throwable throwable) {
+        log.error("Erro ao remover cliente legal", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<ClientPhysical>> updateClientPhysical(Long id, ClientPhysical clientPhysical, String token, Throwable throwable) {
+        log.error("Erro ao atualizar cliente físico", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
 }

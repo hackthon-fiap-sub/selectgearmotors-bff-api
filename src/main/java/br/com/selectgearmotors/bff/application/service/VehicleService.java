@@ -158,6 +158,20 @@ public class VehicleService {
                 .toEntity(Brand.class);
     }
 
+    @CircuitBreaker(name = "getVehiclesCodeService", fallbackMethod = "getVehiclesCodeFallback")
+    @Retry(name = "getVehiclesCodeService", fallbackMethod = "getVehiclesCodeFallback")
+    public Mono<ResponseEntity<Vehicle>> getVehiclesCode(String code, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(vehiclesUrl + "/code/" + code)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .toEntity(Vehicle.class);
+    }
+
     public Mono<ResponseEntity<List<VehicleCategory>>> createVehicleCategoryFallback(VehicleCategory vehicleCategory, String token, Throwable throwable) {
         log.error("Error on createVehicleCategoryFallback", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
@@ -197,4 +211,10 @@ public class VehicleService {
         log.error("Error on createBrandsFallback", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
     }
+
+    public Mono<ResponseEntity<Vehicle>> getVehiclesCodeFallback(String code, String token, Throwable throwable) {
+        log.error("Error on getVehiclesCodeFallback", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
 }

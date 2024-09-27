@@ -114,7 +114,7 @@ public class CompanyService {
     public Mono<ResponseEntity<List<CarSeller>>> getCarSellers(String token) {
         String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.get()
-                .uri(companiesUrl + "/car-sellers")
+                .uri(companyCarSellersUrl)
                 .headers(headers -> {
                     headers.setBearerAuth(tokenSemBearer);
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -130,7 +130,7 @@ public class CompanyService {
     public Mono<ResponseEntity<CarSeller>> createCarSeller(CarSeller carSeller, String token) {
         String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
-                .uri(companiesUrl + "/car-sellers")
+                .uri(companyCarSellersUrl)
                 .headers(headers -> {
                     headers.setBearerAuth(tokenSemBearer);
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -155,6 +155,36 @@ public class CompanyService {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
                 .toEntityList(CompanyMedia.class);
+    }
+
+    @CircuitBreaker(name = "getCompanyCodeService", fallbackMethod = "getCompanyFallback")
+    @Retry(name = "getCompanyCodeService")
+    public Mono<ResponseEntity<Company>> getCompanyCode(String code, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(companiesUrl + "/code/" + code)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Company.class);
+    }
+
+    @CircuitBreaker(name = "getCarSellersCodeService", fallbackMethod = "getCarSellersCodeFallback")
+    @Retry(name = "getCarSellersCodeService")
+    public Mono<ResponseEntity<CarSeller>> getCarSellersCode(String code, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(companyCarSellersUrl + "/code/" + code)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(CarSeller.class);
     }
 
     public Mono<ResponseEntity<Company>> companyCreateFallback(Company company, Throwable throwable) {
@@ -189,6 +219,16 @@ public class CompanyService {
 
     public Mono<ResponseEntity<List<CompanyMedia>>> getCompanyMediaFallback(String token, Throwable throwable) {
         log.error("Erro ao buscar medias de empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Company>> getCompanyFallback(String code, String token, Throwable throwable) {
+        log.error("Erro ao buscar empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<Object> getCarSellersCodeFallback(String code, String token, Throwable throwable) {
+        log.error("Erro ao buscar vendedores por código: {}", throwable.getMessage());
         return Mono.just(ResponseEntity.badRequest().build());
     }
 }

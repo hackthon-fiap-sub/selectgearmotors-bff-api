@@ -67,6 +67,17 @@ public class CompanyResources {
         return companyService.getCompanies(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client Physical", tags = {"clientPhysicals", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/code/{code}")
+    public ResponseEntity<Company> getCompanyCode(@PathVariable("code") String code, @RequestHeader("Authorization") String token) {
+        return companyService.getCompanyCode(code, token).block();
+    }
+
     @Operation(summary = "Retrieve all Client", tags = {"products", "get", "filter"})
     @ApiResponse(responseCode = "200", content = {
             @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
@@ -85,6 +96,17 @@ public class CompanyResources {
     @PostMapping("/car-sellers")
     public ResponseEntity<CarSeller> createCarSeller(@RequestBody CarSeller carSeller, @RequestHeader("Authorization") String token) {
         return companyService.createCarSeller(carSeller, token).block();
+    }
+
+    @Operation(summary = "Retrieve all Client", tags = {"products", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/car-sellers/code/{code}")
+    public ResponseEntity<CarSeller> getCarSellersCode(@PathVariable("code") String code, @RequestHeader("Authorization") String token) {
+        return companyService.getCarSellersCode(code, token).block();
     }
     //##### Company #####
 }

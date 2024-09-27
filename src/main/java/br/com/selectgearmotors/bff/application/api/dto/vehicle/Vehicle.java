@@ -26,6 +26,10 @@ public class Vehicle implements Serializable {
     @Size(min = 1, max = 255)
     private String cor;
 
+    @Schema(description = "name of the Product.",
+            example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
+    private String code;
+
     @Schema(description = "picture of the Product.",
             example = "V$", accessMode = Schema.AccessMode.READ_ONLY)
     private Long mediaId;
