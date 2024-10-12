@@ -187,6 +187,103 @@ public class CompanyService {
                 .toEntity(CarSeller.class);
     }
 
+    @CircuitBreaker(name = "updateCompanyTypeService", fallbackMethod = "updateCompanyTypeFallback")
+    @Retry(name = "updateCompanyTypeService")
+    public Mono<ResponseEntity<CompanyType>> updateCompanyType(Long id, CompanyType companyType, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.post()
+                .uri(companyTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(companyType), CompanyType.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(CompanyType.class);
+    }
+
+    @CircuitBreaker(name = "deleteCompanyTypeService", fallbackMethod = "deleteCompanyTypeFallback")
+    @Retry(name = "deleteCompanyTypeService")
+    public Mono<ResponseEntity<CompanyType>> deleteCompanyType(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(companyTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(CompanyType.class);
+    }
+
+    @CircuitBreaker(name = "updateCompanyService", fallbackMethod = "updateCompanyFallback")
+    @Retry(name = "updateCompanyService")
+    public Mono<ResponseEntity<Company>> updateCompany(Long id, Company company, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(companiesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(company), Company.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API"))
+                )
+                .toEntity(Company.class);
+    }
+
+    @CircuitBreaker(name = "deleteCompanyService", fallbackMethod = "deleteCompanyFallback")
+    @Retry(name = "deleteCompanyService")
+    public Mono<ResponseEntity<Company>> deleteCompanies(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(companiesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API"))
+                )
+                .toEntity(Company.class);
+    }
+
+    @CircuitBreaker(name = "updateCarSellerService", fallbackMethod = "deleteCompanyFallback")
+    @Retry(name = "updateCarSellerService")
+    public Mono<ResponseEntity<CarSeller>> updateCarSeller(Long id, CarSeller carSeller, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(companyCarSellersUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(carSeller), CarSeller.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API"))
+                )
+                .toEntity(CarSeller.class);
+    }
+
+    @CircuitBreaker(name = "deleteCarSellersService", fallbackMethod = "deleteCarSellersFallback")
+    @Retry(name = "deleteCarSellersService")
+    public Mono<ResponseEntity<CarSeller>> deleteCarSellers(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(companyCarSellersUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API"))
+                )
+                .toEntity(CarSeller.class);
+    }
+
     public Mono<ResponseEntity<Company>> companyCreateFallback(Company company, Throwable throwable) {
         log.error("Erro ao criar empresa: {}", throwable.getMessage());
         return Mono.just(ResponseEntity.badRequest().build());
@@ -229,6 +326,31 @@ public class CompanyService {
 
     public Mono<Object> getCarSellersCodeFallback(String code, String token, Throwable throwable) {
         log.error("Erro ao buscar vendedores por código: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<CompanyType>> updateCompanyTypeFallback(Long id, CompanyType companyType, Throwable throwable) {
+        log.error("Erro ao atualizar tipo de empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<CompanyType>> deleteCompanyTypeFallback(Long id, Throwable throwable) {
+        log.error("Erro ao deletar tipo de empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Company>> updateCompanyFallback(Long id, Company company, Throwable throwable) {
+        log.error("Erro ao atualizar empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Company>> deleteCompanyFallback(Long id, Throwable throwable) {
+        log.error("Erro ao deletar empresa: {}", throwable.getMessage());
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<CarSeller>> updateCarSellerFallback(Long id, CarSeller carSeller, Throwable throwable) {
+        log.error("Erro ao atualizar vendedor: {}", throwable.getMessage());
         return Mono.just(ResponseEntity.badRequest().build());
     }
 }

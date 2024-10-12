@@ -172,6 +172,64 @@ public class VehicleService {
                 .toEntity(Vehicle.class);
     }
 
+    @CircuitBreaker(name = "updateVehicleCategoryService", fallbackMethod = "updateVehicleCategoryFallback")
+    @Retry(name = "updateVehicleCategoryService", fallbackMethod = "getVehiclesCodeFallback")
+    public Mono<ResponseEntity<VehicleCategory>> updateVehicleCategory(Long id, VehicleCategory vehicleCategory, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(vehicleTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(vehicleCategory), VehicleCategory.class)
+                .retrieve()
+                .toEntity(VehicleCategory.class);
+    }
+
+    @CircuitBreaker(name = "deleteVehicleCategoryService", fallbackMethod = "deleteVehicleCategoryFallback")
+    @Retry(name = "deleteVehicleCategoryService", fallbackMethod = "deleteVehiclesCodeFallback")
+    public Mono<ResponseEntity<VehicleCategory>> deleteVehicleCategories(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(vehicleTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .toEntity(VehicleCategory.class);
+    }
+
+    @CircuitBreaker(name = "updateVehicleService", fallbackMethod = "updateVehicleFallback")
+    @Retry(name = "updateVehicleService", fallbackMethod = "updateVehicleFallback")
+    public Mono<ResponseEntity<Vehicle>> updateVehicles(Long id, Vehicle vehicle, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(vehiclesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(vehicle), Vehicle.class)
+                .retrieve()
+                .toEntity(Vehicle.class);
+    }
+
+    @CircuitBreaker(name = "deleteVehicleService", fallbackMethod = "deleteVehicleFallback")
+    @Retry(name = "deleteVehicleService", fallbackMethod = "deleteVehicleFallback")
+    public Mono<ResponseEntity<Vehicle>> deleteVehicles(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(vehiclesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .toEntity(Vehicle.class);
+    }
+
     public Mono<ResponseEntity<List<VehicleCategory>>> createVehicleCategoryFallback(VehicleCategory vehicleCategory, String token, Throwable throwable) {
         log.error("Error on createVehicleCategoryFallback", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
@@ -214,6 +272,26 @@ public class VehicleService {
 
     public Mono<ResponseEntity<Vehicle>> getVehiclesCodeFallback(String code, String token, Throwable throwable) {
         log.error("Error on getVehiclesCodeFallback", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<VehicleCategory>> updateVehicleCategoryFallback(Long id, VehicleCategory vehicleCategory, String token, Throwable throwable) {
+        log.error("Error on updateVehicleCategoryFallback", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<VehicleCategory>> deleteVehicleCategoryFallback(Long id, String token, Throwable throwable) {
+        log.error("Error on deleteVehicleCategoryFallback", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Vehicle>> updateVehicleFallback(Long id, Vehicle vehicle, String token, Throwable throwable) {
+        log.error("Error on updateVehicleFallback", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Vehicle>> deleteVehicleFallback(Long id, String token, Throwable throwable) {
+        log.error("Error on deleteVehicleFallback", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
     }
 

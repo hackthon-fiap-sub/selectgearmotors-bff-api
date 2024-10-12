@@ -14,16 +14,16 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "VehicleCategoryRequest", requiredProperties = {"id", "name"})
-@Tag(name = "VehicleCategoryRequest", description = "VehicleCategoryRequest")
+@Schema(description = "VehicleCategory", requiredProperties = {"id", "name"})
+@Tag(name = "VehicleCategory", description = "VehicleCategory")
 public class VehicleCategory implements Serializable {
 
-    @Schema(description = "Unique identifier of the Driver.",
+    @Schema(description = "Unique identifier of the Vehicle Category.",
             example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "Name of the Product Category.",
-            example = "Bebida", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Name of the Product Vehicle Category.",
+            example = "Hatch", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     private String name;
 }

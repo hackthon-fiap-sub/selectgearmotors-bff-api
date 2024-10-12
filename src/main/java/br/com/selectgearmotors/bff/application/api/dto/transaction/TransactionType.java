@@ -23,7 +23,7 @@ public class TransactionType implements Serializable {
     private Long id;
 
     @Schema(description = "Name of the Transaction Category.",
-            example = "Bebida", accessMode = Schema.AccessMode.READ_ONLY)
+            example = "Financiamento", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     private String name;
 }

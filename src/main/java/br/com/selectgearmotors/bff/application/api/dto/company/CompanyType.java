@@ -18,12 +18,12 @@ import java.io.Serializable;
 @Tag(name = "CompanyTypeRequest", description = "Model")
 public class CompanyType implements Serializable {
 
-    @Schema(description = "Unique identifier of the Driver.",
+    @Schema(description = "Unique identifier of the Company Type.",
             example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "Name of the Product Category.",
-            example = "Bebida", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Name of the Product Company Type.",
+            example = "Mei", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     private String name;
 }

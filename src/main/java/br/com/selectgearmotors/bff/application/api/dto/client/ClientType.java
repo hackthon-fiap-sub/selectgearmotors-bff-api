@@ -23,7 +23,7 @@ public class ClientType implements Serializable {
     private Long id;
 
     @Schema(description = "Name of the Product Category.",
-            example = "Bebida", accessMode = Schema.AccessMode.READ_ONLY)
+            example = "Pragmático 5", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     private String name;
 }

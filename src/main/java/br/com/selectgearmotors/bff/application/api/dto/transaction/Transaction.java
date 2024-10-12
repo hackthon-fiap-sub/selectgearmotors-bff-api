@@ -14,24 +14,24 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "TransactionRequest", requiredProperties = {"id", "name", "description", "price", "pic", "productCategoryId", "restaurantId"})
-@Tag(name = "TransactionRequest", description = "Model")
+@Schema(description = "Transaction", requiredProperties = {"id", "name", "description", "price", "pic", "productCategoryId", "restaurantId"})
+@Tag(name = "Transaction", description = "Model")
 public class Transaction implements Serializable {
 
-    @Schema(description = "Unique identifier of the Driver.",
+    @Schema(description = "Unique identifier of the Transaction.",
             example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "Name of the Transaction.",
-            example = "Coca-cola", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Vehicle Code of the Transaction.",
+            example = "93e3abff-dd82-4fd3-9383-dc3695166511", accessMode = Schema.AccessMode.READ_ONLY)
     private String vehicleCode;
 
-    @Schema(description = "Description of the Transaction.",
-            example = "Coca-cola !L", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Client Code of the Transaction.",
+            example = "a28d7e3f-3946-4ecf-a84b-2f033fcfe576", accessMode = Schema.AccessMode.READ_ONLY)
     private String clientCode;
 
-    @Schema(description = "Description of the Transaction.",
-            example = "Coca-cola !L", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Car Seller Code of the Transaction.",
+            example = "d6d46512-c1c6-47bd-8af4-b9dc8ee13e2c", accessMode = Schema.AccessMode.READ_ONLY)
     private String carSellerCode;
 
     @Schema(description = "Price of the Transaction.",
@@ -39,10 +39,10 @@ public class Transaction implements Serializable {
     private BigDecimal price;
 
     @Schema(description = "Pic of the Transaction.",
-            example = "https://www.google.com.br", accessMode = Schema.AccessMode.READ_ONLY)
-    private String transactionStatus;
+            example = "PHYSICAL", accessMode = Schema.AccessMode.READ_ONLY)
+    private String personType;
 
     @Schema(description = "Transaction Category of the Transaction.",
-            example = "Bebida", ref = "TransactionType", accessMode = Schema.AccessMode.READ_ONLY)
+            example = "1", ref = "TransactionType", accessMode = Schema.AccessMode.READ_ONLY)
     private Long transactionTypeId;
 }

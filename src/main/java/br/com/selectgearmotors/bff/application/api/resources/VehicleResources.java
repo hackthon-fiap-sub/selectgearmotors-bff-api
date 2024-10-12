@@ -37,6 +37,15 @@ public class VehicleResources {
         return vehicleService.createVehicleCategory(vehicleCategory, token).block();
     }
 
+    @Operation(summary = "Create a new Client", tags = {"products", "post"})
+    @ApiResponse(responseCode = "201", content = {
+            @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @PostMapping("/categories/{id}")
+    public ResponseEntity<VehicleCategory> updateVehicleCategory(@PathVariable("id") Long id, @RequestBody VehicleCategory vehicleCategory, @RequestHeader("Authorization") String token) {
+        return vehicleService.updateVehicleCategory(id, vehicleCategory, token).block();
+    }
+
     @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
     @ApiResponse(responseCode = "200", content = {
             @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
@@ -48,6 +57,17 @@ public class VehicleResources {
         return vehicleService.getVehicleCategories(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<VehicleCategory> deleteVehicleCategories(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return vehicleService.deleteVehicleCategories(id, token).block();
+    }
+
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
@@ -55,6 +75,15 @@ public class VehicleResources {
     @PostMapping
     public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle, @RequestHeader("Authorization") String token) {
         return vehicleService.createVehicles(vehicle, token).block();
+    }
+
+    @Operation(summary = "Create a new Client", tags = {"products", "post"})
+    @ApiResponse(responseCode = "201", content = {
+            @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @PutMapping("/{id}")
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable("id") Long id, @RequestBody Vehicle vehicle, @RequestHeader("Authorization") String token) {
+        return vehicleService.updateVehicles(id, vehicle, token).block();
     }
 
     @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
@@ -66,6 +95,17 @@ public class VehicleResources {
     @GetMapping
     public ResponseEntity<List<Vehicle>> getVehicles(@RequestHeader("Authorization") String token) {
         return vehicleService.getVehicles(token).block();
+    }
+
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = VehicleResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @DeleteMapping
+    public ResponseEntity<Vehicle> deleteVehicles(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return vehicleService.deleteVehicles(id, token).block();
     }
 
     @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})

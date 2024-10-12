@@ -19,36 +19,36 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "ClientLegalRequest", requiredProperties = {"id", "name"})
-@Tag(name = "ClientLegalRequest", description = "Model")
+@Schema(description = "ClientLegal", requiredProperties = {"id", "socialName", "fantasyName", "companyId", "foundationDate", "clientId"})
+@Tag(name = "ClientLegal", description = "Model")
 public class ClientLegal implements Serializable {
 
-    @Schema(description = "Unique identifier of the Driver.",
+    @Schema(description = "Unique identifier of the ClientLegal.",
             example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @Schema(description = "Fantasy Name of the Cooperative.",
+    @Schema(description = "Social Name of the ClientLegal.",
             example = "SCRAP LTDA", accessMode = Schema.AccessMode.READ_ONLY)
     private String socialName;
 
-    @Schema(description = "Fantasy Name of the Cooperative.",
+    @Schema(description = "Fantasy Name of the ClientLegal.",
             example = "SCRAP LTDA", accessMode = Schema.AccessMode.READ_ONLY)
     private String fantasyName;
 
-    @Schema(description = "Name of the Product Category.",
-            example = "Bebida", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Company Id of the Product ClientLegal.",
+            example = "56.637.167/0001-12", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}\\/\\d{4}\\-\\d{2}$", message = "CNPJ Inválido")
     private String companyId;
 
-    @Schema(description = "socialIdDispatchDate of the Psychological.",
+    @Schema(description = "Foundation Date of the ClientLegal.",
             format = "ISO8601 date string",
             example = "13/09/2022", accessMode = Schema.AccessMode.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.BRAZILIAN_DATE_WITHOUT_TOME)
     @DateTimeFormat(pattern = Constants.BRAZILIAN_DATE_WITHOUT_TOME)
     private LocalDate foundationDate; //Data de Fundação
 
-    @Schema(description = "Client of the User.",
+    @Schema(description = "Client Id of the ClientLegal.",
             example = "1", ref = "ClientCategoryEntity", accessMode = Schema.AccessMode.READ_ONLY)
     private Long clientId;
 }

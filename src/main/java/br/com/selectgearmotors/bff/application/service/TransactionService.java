@@ -125,6 +125,64 @@ public class TransactionService {
                 .toEntity(TransactionCreate.class);
     }
 
+    @CircuitBreaker(name = "updateTransactionCreateService", fallbackMethod = "updateTransactionCreateFallback")
+    @Retry(name = "updateTransactionCreateService")
+    public Mono<ResponseEntity<TransactionType>> updateTransactionType(Long id, TransactionType transactionType, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(transactionTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(transactionType), TransactionType.class)
+                .retrieve()
+                .toEntity(TransactionType.class);
+    }
+
+    @CircuitBreaker(name = "deleteTransactionCreateService", fallbackMethod = "deleteTransactionCreateFallback")
+    @Retry(name = "deleteTransactionCreateService")
+    public Mono<ResponseEntity<TransactionType>> deleteTransactionTypes(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(transactionTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .toEntity(TransactionType.class);
+    }
+
+    @CircuitBreaker(name = "updateTransactionService", fallbackMethod = "updateTransactionFallback")
+    @Retry(name = "updateTransactionService")
+    public Mono<ResponseEntity<Transaction>> updateTransaction(Long id, Transaction transaction, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.put()
+                .uri(transactionsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(Mono.just(transaction), Transaction.class)
+                .retrieve()
+                .toEntity(Transaction.class);
+    }
+
+    @CircuitBreaker(name = "deleteTransactionService", fallbackMethod = "deleteTransactionFallback")
+    @Retry(name = "deleteTransactionService")
+    public Mono<ResponseEntity<Transaction>> deleteTransactions(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.delete()
+                .uri(transactionsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .toEntity(Transaction.class);
+    }
+
     public Mono<ResponseEntity<TransactionType>> createTransactionTypeFallback(TransactionType transactionType, String token, Throwable throwable) {
         log.error("Erro ao criar tipo de transação", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
@@ -152,6 +210,26 @@ public class TransactionService {
 
     public Mono<ResponseEntity<TransactionCreate>> createTransactionCreateFallback(TransactionCreate transactionCreate, String token, Throwable throwable) {
         log.error("Erro ao criar transação de criação", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<TransactionType>> updateTransactionCreateFallback(Long id, TransactionType transactionType, String token, Throwable throwable) {
+        log.error("Erro ao atualizar transação de criação", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<TransactionType>> deleteTransactionCreateFallback(Long id, String token, Throwable throwable) {
+        log.error("Erro ao deletar transação de criação", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Transaction>> updateTransactionFallback(Long id, Transaction transaction, String token, Throwable throwable) {
+        log.error("Erro ao atualizar transação", throwable);
+        return Mono.just(ResponseEntity.badRequest().build());
+    }
+
+    public Mono<ResponseEntity<Transaction>> deleteTransactionFallback(Long id, String token, Throwable throwable) {
+        log.error("Erro ao deletar transação", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
     }
 }

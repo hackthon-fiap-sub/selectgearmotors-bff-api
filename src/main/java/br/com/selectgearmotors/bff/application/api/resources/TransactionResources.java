@@ -36,6 +36,15 @@ public class TransactionResources {
         return transactionService.createTransactionType(transactionType, token).block();
     }
 
+    @Operation(summary = "Create a new Client", tags = {"products", "post"})
+    @ApiResponse(responseCode = "201", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @PutMapping("/types/{id}")
+    public ResponseEntity<TransactionType> updateTransactionType(@PathVariable("id") Long id, @RequestBody TransactionType transactionType, @RequestHeader("Authorization") String token) {
+        return transactionService.updateTransactionType(id, transactionType, token).block();
+    }
+
     @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
     @ApiResponse(responseCode = "200", content = {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
@@ -47,6 +56,17 @@ public class TransactionResources {
         return transactionService.getTransactionTypes(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @DeleteMapping("/types/{id}")
+    public ResponseEntity<TransactionType> deleteTransactionTypes(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return transactionService.deleteTransactionTypes(id, token).block();
+    }
+
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
@@ -54,6 +74,15 @@ public class TransactionResources {
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, @RequestHeader("Authorization") String token) {
         return transactionService.createTransaction(transaction, token).block();
+    }
+
+    @Operation(summary = "Create a new Client", tags = {"products", "post"})
+    @ApiResponse(responseCode = "201", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @PutMapping("/{id}")
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable("id") Long id, @RequestBody Transaction transaction, @RequestHeader("Authorization") String token) {
+        return transactionService.updateTransaction(id, transaction, token).block();
     }
 
     @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
@@ -65,6 +94,17 @@ public class TransactionResources {
     @GetMapping
     public ResponseEntity<List<Transaction>> getTransactions(@RequestHeader("Authorization") String token) {
         return transactionService.getTransactions(token).block();
+    }
+
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @DeleteMapping
+    public ResponseEntity<Transaction> deleteTransactions(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return transactionService.deleteTransactions(id, token).block();
     }
 
     @Operation(summary = "Create a new Client", tags = {"products", "post"})

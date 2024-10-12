@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "ModelRequest", requiredProperties = {"id, name"})
-@Tag(name = "ModelRequest", description = "Model")
+@Schema(description = "Model", requiredProperties = {"id, name", "brandId"})
+@Tag(name = "Model", description = "Model")
 public class Model implements Serializable {
 
     @Schema(description = "Unique identifier of the Driver.",
@@ -23,11 +23,11 @@ public class Model implements Serializable {
     private Long id;
 
     @Schema(description = "Name of the Model.",
-            example = "Seven Food", accessMode = Schema.AccessMode.READ_ONLY)
+            example = "Ranger 1.8", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 3, max = 255)
     private String name;
 
-    @Schema(description = "Name of the Model.",
-            example = "Seven Food", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Brand Id of the Model.",
+            example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long brandId;
 }

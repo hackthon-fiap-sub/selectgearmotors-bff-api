@@ -28,7 +28,7 @@ public class ClientPhysical implements Serializable {
     private Long id;
 
     @Schema(description = "crp number of the Psychological.",
-            example = "Jessica Abigail", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            example = "060.606.200-94", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Column(name = "social_id")
     @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$", message = "CPF number")
     private String socialId; //CPF
