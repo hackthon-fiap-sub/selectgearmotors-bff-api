@@ -1,8 +1,6 @@
 package br.com.selectgearmotors.bff.application.api.resources;
 
-import br.com.selectgearmotors.bff.application.api.dto.transaction.Transaction;
-import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionCreate;
-import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionType;
+import br.com.selectgearmotors.bff.application.api.dto.transaction.*;
 import br.com.selectgearmotors.bff.application.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -72,8 +70,8 @@ public class TransactionResources {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, @RequestHeader("Authorization") String token) {
-        return transactionService.createTransaction(transaction, token).block();
+    public ResponseEntity<TransactionPaymentResponse> createTransaction(@RequestBody Transaction transaction, @RequestHeader("Authorization") String token) {
+         return transactionService.createTransaction(transaction, token).block();
     }
 
     @Operation(summary = "Create a new Client", tags = {"products", "post"})

@@ -12,12 +12,12 @@ docker rmi $(docker images -qa) -f
 ./mvnw clean install test jacoco:report
 sudo sysctl -w vm.max_map_count=262144
 
-docker build -t rogeriofontes/sevenfood-bff-api:v3 .
+docker build -t rogeriofontes/selectgearmotors-bff-api:v6 .
 docker login
-docker push rogeriofontes/sevenfood-bff-api:v3
+docker push rogeriofontes/selectgearmotors-bff-api:v6
 
-docker pull rogeriofontes/sevenfood-bff-api:v3
-docker run -p 9989:9989 sevenfood-bff-api:v3
+docker pull rogeriofontes/selectgearmotors-bff-api:v6
+docker run -p 9989:9989 selectgearmotors-bff-api:v6
 ====
 docker run -u zap -p 8080:8080 -v "$(pwd)/docs/zap_workdir:/zap/wrk" -i ghcr.io/zaproxy/zaproxy:stable zap-api-scan.py -t http://localhost:9914/api/v3/api-docs -f openapi -c zap-rules.conf -r zap_report_antes_op1.html
 docker run -u zap -p 8080:8080 -v "$(pwd)/docs/zap_workdir:/zap/wrk" -i ghcr.io/zaproxy/zaproxy:stable zap-api-scan.py -t http://localhost:9914/api/v3/api-docs -f openapi -c zap-rules.conf -r zap_report_antes_op1.html

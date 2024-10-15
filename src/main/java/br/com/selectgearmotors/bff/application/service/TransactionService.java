@@ -1,8 +1,6 @@
 package br.com.selectgearmotors.bff.application.service;
 
-import br.com.selectgearmotors.bff.application.api.dto.transaction.Transaction;
-import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionCreate;
-import br.com.selectgearmotors.bff.application.api.dto.transaction.TransactionType;
+import br.com.selectgearmotors.bff.application.api.dto.transaction.*;
 import br.com.selectgearmotors.bff.commons.util.TokenUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -66,7 +64,7 @@ public class TransactionService {
     // Transaction
     @CircuitBreaker(name = "createTransactionService", fallbackMethod = "createTransactionFallback")
     @Retry(name = "createTransactionService")
-    public Mono<ResponseEntity<Transaction>> createTransaction(Transaction transaction, String token) {
+    public Mono<ResponseEntity<TransactionPaymentResponse>> createTransaction(Transaction transaction, String token) {
         String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.post()
                 .uri(transactionsUrl)
@@ -76,7 +74,7 @@ public class TransactionService {
                 })
                 .body(Mono.just(transaction), Transaction.class)
                 .retrieve()
-                .toEntity(Transaction.class);
+                .toEntity(TransactionPaymentResponse.class);
     }
 
     // Transaction
