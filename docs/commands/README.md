@@ -12,9 +12,9 @@ docker rmi $(docker images -qa) -f
 ./mvnw clean install test jacoco:report
 sudo sysctl -w vm.max_map_count=262144
 
-docker build -t rogeriofontes/selectgearmotors-bff-api:v6 .
+docker build -t rogeriofontes/selectgearmotors-bff-api:v8 .
 docker login
-docker push rogeriofontes/selectgearmotors-bff-api:v6
+docker push rogeriofontes/selectgearmotors-bff-api:v8
 
 docker pull rogeriofontes/selectgearmotors-bff-api:v6
 docker run -p 9989:9989 selectgearmotors-bff-api:v6
