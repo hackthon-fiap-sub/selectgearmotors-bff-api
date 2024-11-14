@@ -7,19 +7,19 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: selectgearmotors-transaction-api
+      app: selectgearmotors-bff-api
   template:
     metadata:
       labels:
-        app: selectgearmotors-transaction-api
+        app: selectgearmotors-bff-api
     spec:
       containers:
         - name: selectgearmotors-api
-          image: rogeriofontes/selectgearmotors-transaction-api:v8
+          image: rogeriofontes/selectgearmotors-bff-api:v8
           ports:
             - containerPort: 9999
           envFrom:
             - configMapRef:
-                name: selectgearmotors-transaction-api-config
+                name: selectgearmotors-bff-api-config
             - secretRef:
-                name: selectgearmotors-transaction-api-secrets
+                name: selectgearmotors-bff-api-secrets
