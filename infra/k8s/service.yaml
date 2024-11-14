@@ -10,7 +10,7 @@ spec:
   type: LoadBalancer
   ports:
     - protocol: "TCP"
-      port: 9934
-      targetPort: 9934
+      port: 9999
+      targetPort: 9999
   selector:
     app: selectgearmotors-bff-api
