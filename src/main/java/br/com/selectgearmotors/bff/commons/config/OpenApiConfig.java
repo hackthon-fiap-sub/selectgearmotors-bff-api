@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
                         url = "https://selectgearmotors.com.br"
                 ),
                 description = "OpenApi documentation for Spring Security",
-                title = "OpenApi specification - Mentor API",
+                title = "OpenApi specification - SelectGearMotors BFF API",
                 version = "1.0",
                 license = @License(
                         name = "Licence name",
