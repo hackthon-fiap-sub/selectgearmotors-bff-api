@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.MembershipKey;
 import java.util.List;
 
 @Slf4j
@@ -318,6 +319,58 @@ public class ClientService {
     public Mono<ResponseEntity<ClientPhysical>> removeClientPhysicals(Long id, String token) {
         String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
         return webClient.delete()
+                .uri(clientPhysicalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientPhysical.class);
+    }
+
+    public Mono<ResponseEntity<ClientType>> getClientTypeById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(clientTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientType.class);
+    }
+
+    public Mono<ResponseEntity<Client>> getClientById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(clientsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Client.class);
+    }
+
+    public Mono<ResponseEntity<ClientLegal>> getClientLegalById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(clientLegalUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(ClientLegal.class);
+    }
+
+    public Mono<ResponseEntity<ClientPhysical>> getClientPhysicalById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
                 .uri(clientPhysicalUrl + "/" + id)
                 .headers(headers -> {
                     headers.setBearerAuth(tokenSemBearer);

@@ -27,13 +27,13 @@ public class ClientResources {
         this.clientService = clientService;
     }
 
-    //##### Client #####
+    //##### Client Type #####
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @PostMapping("/types")
-    public ResponseEntity<ClientType> createClientType(@RequestBody ClientType clientType,@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ClientType> createClientType(@RequestBody ClientType clientType, @RequestHeader("Authorization") String token) {
         return clientService.createClientType(clientType, token).block();
     }
 
@@ -42,7 +42,7 @@ public class ClientResources {
             @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @PutMapping("/types/{id}")
-    public ResponseEntity<ClientType> createClientType(@PathVariable("id") Long id, @RequestBody ClientType clientType,@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ClientType> updateClientType(@PathVariable("id") Long id, @RequestBody ClientType clientType, @RequestHeader("Authorization") String token) {
         return clientService.updateClientType(id, clientType, token).block();
     }
 
@@ -66,6 +66,19 @@ public class ClientResources {
         return clientService.getClientTypes(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/types/{id}")
+    public ResponseEntity<ClientType> getClientTypeById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return clientService.getClientTypeById(id, token).block();
+    }
+    //##### Client Type #####
+
+    //##### Client #####
     @Operation(summary = "Create a new Client", tags = {"clients", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
@@ -104,6 +117,30 @@ public class ClientResources {
         return clientService.getClients(token).block();
     }
 
+    @Operation(summary = "Retrieve all Client Physical", tags = {"clientPhysicals", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/code/{code}")
+    public ResponseEntity<Client> getClientCode(@PathVariable("code") String code, @RequestHeader("Authorization") String token) {
+        return clientService.getClientCode(code, token).block();
+    }
+
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/{id}")
+    public ResponseEntity<Client> getClientById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return clientService.getClientById(id, token).block();
+    }
+    //##### Client #####
+
+    //##### Client legal #####
     @Operation(summary = "Create a new Client Legal", tags = {"client Legals", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
@@ -142,6 +179,19 @@ public class ClientResources {
         return clientService.removeClientLegal(id, token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/legals/{id}")
+    public ResponseEntity<ClientLegal> getClientLegalById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return clientService.getClientLegalById(id, token).block();
+    }
+    //##### Client legal #####
+
+    //##### Client physical #####
     @Operation(summary = "Create a new Client", tags = {"clients", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = ClientResources.class), mediaType = "application/json")})
@@ -188,10 +238,9 @@ public class ClientResources {
     @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
             @Content(schema = @Schema())})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
-    @GetMapping("/code/{code}")
-    public ResponseEntity<Client> getClientCode(@PathVariable("code") String code, @RequestHeader("Authorization") String token) {
-        return clientService.getClientCode(code, token).block();
+    @GetMapping("/physicals/{id}")
+    public ResponseEntity<ClientPhysical> getClientPhysicalById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return clientService.getClientPhysicalById(id, token).block();
     }
-    //##### Client #####
-
+    //##### Client physical #####
 }

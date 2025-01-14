@@ -1,17 +1,21 @@
 package br.com.selectgearmotors.bff.application.service;
 
+import br.com.selectgearmotors.bff.application.api.dto.reservation.Reservation;
 import br.com.selectgearmotors.bff.application.api.dto.transaction.*;
+import br.com.selectgearmotors.bff.commons.exception.ResourceFoundException;
 import br.com.selectgearmotors.bff.commons.util.TokenUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.MembershipKey;
 import java.util.List;
 
 @Slf4j
@@ -181,6 +185,32 @@ public class TransactionService {
                 .toEntity(Transaction.class);
     }
 
+    public Mono<ResponseEntity<TransactionType>> getTransactionTypeById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(transactionTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(TransactionType.class);
+    }
+
+    public Mono<ResponseEntity<Transaction>> getTransactionById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(transactionsUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Transaction.class);
+    }
+
     public Mono<ResponseEntity<TransactionType>> createTransactionTypeFallback(TransactionType transactionType, String token, Throwable throwable) {
         log.error("Erro ao criar tipo de transação", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
@@ -230,4 +260,5 @@ public class TransactionService {
         log.error("Erro ao deletar transação", throwable);
         return Mono.just(ResponseEntity.badRequest().build());
     }
+
 }

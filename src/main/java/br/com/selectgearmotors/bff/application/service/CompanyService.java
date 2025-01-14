@@ -1,6 +1,6 @@
 package br.com.selectgearmotors.bff.application.service;
 
-import br.com.selectgearmotors.bff.application.api.dto.client.ClientMedia;
+import br.com.selectgearmotors.bff.application.api.dto.client.ClientLegal;
 import br.com.selectgearmotors.bff.application.api.dto.company.CarSeller;
 import br.com.selectgearmotors.bff.application.api.dto.company.Company;
 import br.com.selectgearmotors.bff.application.api.dto.company.CompanyMedia;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.MembershipKey;
 import java.util.List;
 
 @Slf4j
@@ -284,6 +285,45 @@ public class CompanyService {
                 .toEntity(CarSeller.class);
     }
 
+    public Mono<ResponseEntity<CompanyType>> getCompanyTypeById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(companyTypesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(CompanyType.class);
+    }
+
+    public Mono<ResponseEntity<Company>> getCompanyById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(companiesUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(Company.class);
+    }
+
+    public Mono<ResponseEntity<CarSeller>> getCarSellerById(Long id, String token) {
+        String tokenSemBearer = TokenUtil.removeBearerPrefix(token);
+        return webClient.get()
+                .uri(companyCarSellersUrl + "/" + id)
+                .headers(headers -> {
+                    headers.setBearerAuth(tokenSemBearer);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> Mono.error(new ResourceFoundException("Erro na API")))
+                .toEntity(CarSeller.class);
+    }
+
     public Mono<ResponseEntity<Company>> companyCreateFallback(Company company, Throwable throwable) {
         log.error("Erro ao criar empresa: {}", throwable.getMessage());
         return Mono.just(ResponseEntity.badRequest().build());
@@ -353,4 +393,5 @@ public class CompanyService {
         log.error("Erro ao atualizar vendedor: {}", throwable.getMessage());
         return Mono.just(ResponseEntity.badRequest().build());
     }
+
 }

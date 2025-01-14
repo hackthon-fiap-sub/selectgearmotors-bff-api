@@ -26,7 +26,7 @@ public class CompanyResources {
         this.companyService = companyService;
     }
 
-    //##### Company #####
+    //##### Company Type #####
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
@@ -67,6 +67,19 @@ public class CompanyResources {
         return companyService.deleteCompanyType(id, token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/types/{id}")
+    public ResponseEntity<CompanyType> getCompanyTypeByID(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return companyService.getCompanyTypeById(id, token).block();
+    }
+    //##### Company Type #####
+
+    //##### Company #####
     @Operation(summary = "Create a new Client", tags = {"companies", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = Company.class), mediaType = "application/json")})
@@ -124,6 +137,19 @@ public class CompanyResources {
     @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
             @Content(schema = @Schema())})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/{id}")
+    public ResponseEntity<Company> getCompanyById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return companyService.getCompanyById(id, token).block();
+    }
+    //##### Company #####
+
+    //##### Company CarSeller #####
+    @Operation(summary = "Retrieve all Client", tags = {"products", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @GetMapping("/car-sellers")
     public ResponseEntity<List<CarSeller>> getCarSellers(@RequestHeader("Authorization") String token) {
         return companyService.getCarSellers(token).block();
@@ -168,5 +194,17 @@ public class CompanyResources {
     public ResponseEntity<CarSeller> deleteCarSellers(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
         return companyService.deleteCarSellers(id, token).block();
     }
-    //##### Company #####
+
+    @Operation(summary = "Retrieve all Client", tags = {"products", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CompanyResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/car-sellers")
+    public ResponseEntity<CarSeller> getCarSellerById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return companyService.getCarSellerById(id, token).block();
+    }
+
+    //##### Company CarSeller #####
 }

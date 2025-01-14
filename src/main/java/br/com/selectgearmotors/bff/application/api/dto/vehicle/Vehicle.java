@@ -31,10 +31,6 @@ public class Vehicle implements Serializable {
     private String code;
 
     @Schema(description = "picture of the Vehicle.",
-            example = "1", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long mediaId;
-
-    @Schema(description = "picture of the Vehicle.",
             example = "1234", accessMode = Schema.AccessMode.READ_ONLY)
     private int vehicleYear;
 
@@ -81,6 +77,10 @@ public class Vehicle implements Serializable {
             example = "GZK-8775", accessMode = Schema.AccessMode.READ_ONLY)
     @Size(min = 0, max = 255)
     private String plate;
+
+    @Schema(description = "picture of the Vehicle.",
+            example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    private Long mediaId;
 
     @Schema(description = "Chassis of the Vehicle.",
             example = "1HGCM82633A123456", accessMode = Schema.AccessMode.READ_ONLY)

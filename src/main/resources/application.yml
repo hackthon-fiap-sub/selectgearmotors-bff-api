@@ -7,6 +7,9 @@ server:
       enabled: false
 
 spring:
+  h2:
+    console:
+      enabled: false
   application:
     name: selectgearmotors-bff-api
   config:
@@ -67,6 +70,8 @@ api:
     url: ${VEHICLES_MODELS_URL}
   vehicle-brands:
     url: ${VEHICLES_BRANDS_URL}
+  reservations:
+    url: ${RESERVATIONS_URL}
 
 swagger:
   api:

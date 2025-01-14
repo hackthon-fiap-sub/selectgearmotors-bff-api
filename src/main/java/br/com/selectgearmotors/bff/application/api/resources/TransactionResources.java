@@ -24,7 +24,7 @@ public class TransactionResources {
         this.transactionService = transactionService;
     }
 
-    //##### Transaction #####
+    //##### Transaction Type #####
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
@@ -65,13 +65,26 @@ public class TransactionResources {
         return transactionService.deleteTransactionTypes(id, token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/types/{id}")
+    public ResponseEntity<TransactionType> getTransactionTypeById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return transactionService.getTransactionTypeById(id, token).block();
+    }
+    //##### Transaction Type #####
+
+    //##### Transaction #####
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @PostMapping
     public ResponseEntity<TransactionPaymentResponse> createTransaction(@RequestBody Transaction transaction, @RequestHeader("Authorization") String token) {
-         return transactionService.createTransaction(transaction, token).block();
+        return transactionService.createTransaction(transaction, token).block();
     }
 
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
@@ -105,11 +118,24 @@ public class TransactionResources {
         return transactionService.deleteTransactions(id, token).block();
     }
 
+    @Operation(summary = "Retrieve all Client", tags = {"clients", "get", "filter"})
+    @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "204", description = "There are no Associations", content = {
+            @Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    @GetMapping("/{id}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        return transactionService.getTransactionById(id, token).block();
+    }
+    //##### Transaction #####
+
     @Operation(summary = "Create a new Client", tags = {"products", "post"})
     @ApiResponse(responseCode = "201", content = {
             @Content(schema = @Schema(implementation = TransactionResources.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @PostMapping("/transaction-creates")
+    @Deprecated
     public ResponseEntity<TransactionCreate> createTransactionCreate(@RequestBody TransactionCreate transactionCreate, @RequestHeader("Authorization") String token) {
         return transactionService.createTransactionCreate(transactionCreate, token).block();
     }
@@ -121,6 +147,7 @@ public class TransactionResources {
             @Content(schema = @Schema())})
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     @GetMapping("/transaction-creates")
+    @Deprecated
     public ResponseEntity<List<TransactionCreate>> getTransactionCreates(@RequestHeader("Authorization") String token) {
         return transactionService.getTransactionCreates(token).block();
     }
